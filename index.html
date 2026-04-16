@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Alejandro Lay</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    
+    <link rel="icon" type="image/png" href="logo.png"> 
+    
+    <link rel="apple-touch-icon" href="logo.png"> 
+    
     <style>
         :root { --primary: #000; --bg: #f0f2f5; --card: #fff; --radius: 12px; }
         body { font-family: 'Helvetica', Arial, sans-serif; color: #333; line-height: 1.6; padding: 20px; background-color: var(--bg); margin: 0; }
@@ -18,20 +22,23 @@
         .grid-controles { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         label { font-weight: bold; font-size: 0.85rem; display: block; margin-bottom: 5px; text-transform: uppercase; color: #555; }
         input, textarea, select { width: 100%; padding: 12px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; -webkit-appearance: none; }
-        .doc-render { width: 800px; margin: 0 auto; padding: 50px; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.05); box-sizing: border-box; }
+        
+        .doc-render { width: 800px; margin: 0 auto; padding: 50px; background: white; box-shadow: 0 0 20px rgba(0,0,0,0.05); box-sizing: border-box; } [cite: 10]
         .header { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 20px; }
         .datos-emisor p { margin: 0; font-size: 0.95rem; }
         .datos-cliente { margin-bottom: 30px; }
         .datos-cliente-label { text-transform: uppercase; font-size: 0.7rem; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
         .datos-cliente-box { white-space: pre-line; font-weight: bold; font-size: 1rem; }
+        
         table { width: 100%; border-collapse: collapse; margin-bottom: 30px; table-layout: fixed; }
         th { text-align: left; border-bottom: 2px solid #333; padding: 12px 10px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
         td { padding: 15px 10px; border-bottom: 1px solid #eee; font-size: 0.9rem; word-wrap: break-word; }
         .totales-container { margin-left: auto; width: 45%; }
         .fila-total { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f9f9f9; }
         .fila-total.final { border-top: 2px solid #333; margin-top: 10px; padding-top: 10px; font-weight: bold; font-size: 1.2rem; }
-        .nota-final { margin-top: 40px; font-size: 0.85rem; color: #555; border-top: 1px solid #eee; padding-top: 20px; }
-        .lopd { margin-top: 30px; font-size: 0.65rem; color: #888; text-align: justify; line-height: 1.3; }
+        .nota-final { margin-top: 40px; font-size: 0.85rem; color: #555; border-top: 1px solid #eee; padding-top: 20px; } [cite: 1]
+        .lopd { margin-top: 30px; font-size: 0.65rem; color: #888; text-align: justify; line-height: 1.3; } 
+
         #signature-pad { border: 2px dashed #ccc; background: #fafafa; width: 100%; height: 200px; touch-action: none; border-radius: 8px; }
         .signature-box { margin-top: 60px; display: flex; justify-content: center; text-align: center; }
         .signature-line { border-top: 1px solid #000; width: 250px; margin-top: 60px; padding-top: 10px; font-size: 0.9rem; font-weight: bold; }
@@ -50,13 +57,12 @@
         }
 
         @media print {
-            /* FUERZA ELIMINACIÓN DE CABECERAS EN IPHONE */
             @page { size: auto; margin: 5mm; } 
             .no-print, .btn-back, .selector-inicial { display: none !important; }
             body { background: white !important; padding: 0 !important; margin: 0 !important; }
             .view { display: none !important; }
             .view.active { display: block !important; }
-            .doc-render { width: 100% !important; margin: 0 !important; padding: 10mm !important; box-shadow: none !important; position: static !important; }
+            .doc-render { width: 100% !important; margin: 0 !important; padding: 10mm !important; box-shadow: none !important; position: static !important; } 
             table { width: 100% !important; table-layout: fixed !important; }
             th:nth-child(1), td:nth-child(1) { width: 50% !important; }
             .header { display: flex !important; justify-content: space-between !important; }
@@ -81,7 +87,7 @@
                         <label>Nº Factura</label>
                         <input type="text" id="in_num" placeholder="Ej: 2026-001">
                         <label>Datos Cliente</label>
-                        <textarea id="in_cliente_datos" rows="4"></textarea>
+                        <textarea id="in_cliente_datos" rows="4" placeholder="Nombre, NIF, Dirección..."></textarea>
                         <label>Método de Pago</label>
                         <select id="in_metodo_pago">
                             <option>Transferencia bancaria</option>
@@ -133,9 +139,9 @@
                     <div class="fila-total"><span>IVA (21%)</span> <span id="f_iva">0,00 €</span></div>
                     <div class="fila-total final"><span>TOTAL NETO</span> <span id="f_final">0,00 €</span></div>
                 </div>
-                <div class="nota-final"><strong>Método de pago:</strong> <span id="f_metodo"></span>.</div>
+                <div class="nota-final"><strong>Método de pago:</strong> <span id="f_metodo"></span>.</div> [cite: 1]
                 <div class="lopd">
-                    <strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en esta factura serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com
+                    <strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en esta factura serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com 
                 </div>
             </div>
         </div>
@@ -175,12 +181,12 @@
                 </div>
                 <p><strong>REUNIDOS:</strong> Comprador Sr. Alejandro Lay Velasco, y <strong>VENDEDOR</strong>:</p>
                 <p>D/Dña. <span id="out_cv_nombre" style="font-weight:bold"></span>, NIF <span id="out_cv_dni" style="font-weight:bold"></span>, domicilio <span id="out_cv_dir" style="font-weight:bold"></span>.</p>
-                <p><strong>ACUERDAN:</strong> Compraventa de <span id="out_cv_prod" style="font-weight:bold"></span>, por <span id="out_cv_precio" style="font-weight:bold"></span> €.</p>
+                <p><strong>ACUERDAN:</strong> Compraventa de <span id="out_cv_prod" style="font-weight:bold"></span>, por <span id="out_cv_precio" style="font-weight:bold"></span> €.</p> [cite: 10]
                 <div class="signature-box">
                     <div><img id="f-firma-img" src="" style="display: none;"><div class="signature-line">Fdo: El Vendedor</div></div>
                 </div>
                 <div class="lopd" style="margin-top: 50px;">
-                    <strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en este contrato serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com
+                    <strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en este contrato serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com 
                 </div>
             </div>
         </div>
