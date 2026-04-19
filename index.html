@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Alejandro Lay</title>
+    <title>Compraventa</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <style>
@@ -27,9 +27,8 @@
         .header-derecha h1 { margin: 0; font-size: 1.8rem; line-height: 1; letter-spacing: 2px; }
         .header-derecha p { margin: 5px 0 0 0; font-size: 0.9rem; }
         
-        .datos-cliente { margin-top: 20px; margin-bottom: 30px; }
-        .datos-cliente-label { text-transform: uppercase; font-size: 0.7rem; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
-        .datos-cliente-box { white-space: pre-line; font-weight: bold; font-size: 1rem; }
+        .seccion-label { text-transform: uppercase; font-size: 0.7rem; color: #888; margin-bottom: 5px; letter-spacing: 1px; }
+        .datos-cliente-box { white-space: pre-line; font-weight: bold; font-size: 1rem; margin-bottom: 20px; }
         
         table { width: 100%; border-collapse: collapse; margin-bottom: 30px; table-layout: fixed; }
         th { text-align: left; border-bottom: 2px solid #333; padding: 12px 10px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
@@ -55,8 +54,6 @@
             body { padding: 10px; }
             .grid-controles { grid-template-columns: 1fr; }
             .doc-render { width: 100%; padding: 25px; box-shadow: none; }
-            .selector-inicial { margin: 40px auto; }
-            .btn-back { width: 100%; text-align: center; }
             .signature-grid { flex-direction: column; align-items: center; }
         }
 
@@ -64,12 +61,7 @@
             @page { size: auto; margin: 5mm; }
             .no-print, .btn-back, .selector-inicial { display: none !important; }
             body { background: white !important; padding: 0 !important; margin: 0 !important; }
-            .view { display: none !important; }
-            .view.active { display: block !important; }
-            .doc-render { width: 100% !important; margin: 0 !important; padding: 10mm !important; box-shadow: none !important; position: static !important; }
-            table { width: 100% !important; table-layout: fixed !important; }
-            th:nth-child(1), td:nth-child(1) { width: 50% !important; }
-            .header { display: flex !important; justify-content: space-between !important; align-items: flex-start !important; }
+            .doc-render { width: 100% !important; margin: 0 !important; padding: 10mm !important; box-shadow: none !important; }
         }
     </style>
 </head>
@@ -89,16 +81,15 @@
                 <h2>Factura de Venta</h2>
                 <div class="grid-controles">
                     <div>
+                        <label>Emitido por:</label>
+                        <select id="sel_emisor_v" onchange="cambiarEmisor('v')">
+                            <option value="alejandro">Alejandro Lay Velasco</option>
+                            <option value="guillem">Guillem Fernández</option>
+                        </select>
                         <label>Nº Factura</label>
                         <input type="text" id="in_num" placeholder="Ej: 2026-001">
                         <label>Datos Cliente</label>
                         <textarea id="in_cliente_datos" rows="4"></textarea>
-                        <label>Método de Pago</label>
-                        <select id="in_metodo_pago">
-                            <option>Transferencia bancaria</option>
-                            <option>Efectivo</option>
-                            <option>Bizum</option>
-                        </select>
                     </div>
                     <div>
                         <label>Concepto (IVA inc.)</label>
@@ -119,7 +110,7 @@
 
             <div id="factura-render" class="doc-render">
                 <div class="header">
-                    <div class="datos-emisor">
+                    <div class="datos-emisor" id="emisor_f">
                         <p><strong>Alejandro Lay Velasco</strong></p>
                         <p>47196144Y</p>
                         <p>Carrer d'Enric Morera, 64B</p>
@@ -131,10 +122,10 @@
                         <p>Fecha: <span id="f_fecha_v"></span></p>
                     </div>
                 </div>
-                <div class="datos-cliente"><div class="datos-cliente-label">Facturar a:</div><div id="f_cliente_datos" class="datos-cliente-box">"Vista Previa"</div></div>
+                <div class="datos-cliente"><div class="seccion-label">Facturar a:</div><div id="f_cliente_datos" class="datos-cliente-box">Pulse "Vista Previa"</div></div>
                 <table><thead><tr><th>Descripción</th><th>Cant.</th><th style="text-align:right">Base</th><th style="text-align:right">Total</th></tr></thead><tbody id="f_tabla_body"></tbody></table>
                 <div class="totales-container"><div class="fila-total"><span>Base Imponible</span> <span id="f_subtotal">0,00 €</span></div><div class="fila-total"><span>IVA (21%)</span> <span id="f_iva">0,00 €</span></div><div class="fila-total final"><span>TOTAL NETO</span> <span id="f_final">0,00 €</span></div></div>
-                <div class="lopd"><strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en esta factura serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com</div>
+                <div class="lopd" id="lopd_v"><strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en esta factura serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com</div>
             </div>
         </div>
     </div>
@@ -146,66 +137,127 @@
                 <h2>Contrato Compraventa</h2>
                 <div class="grid-controles">
                     <div>
+                        <label>Emitido por (Comprador):</label>
+                        <select id="sel_emisor_c" onchange="cambiarEmisor('c')">
+                            <option value="alejandro">Alejandro Lay Velasco</option>
+                            <option value="guillem">Guillem Fernández</option>
+                        </select>
+                        <label>Nº de Contrato</label>
+                        <input type="text" id="cv_num" placeholder="Ej: A-0053">
                         <label>Vendedor (Particular)</label>
                         <input type="text" id="cv_nombre" placeholder="Nombre y Apellidos">
                         <input type="text" id="cv_dni" placeholder="DNI / NIE">
                         <input type="text" id="cv_tel" placeholder="Teléfono">
                         <textarea id="cv_dir" placeholder="Dirección completa" rows="2"></textarea>
+                    </div>
+                    <div>
                         <label>Detalles del Bien</label>
                         <input type="text" id="cv_prod" placeholder="Marca / Modelo">
                         <input type="text" id="cv_imei" placeholder="IMEI / Nº Serie">
-                        <input type="text" id="cv_est" placeholder="Estado (Batería, golpes...)">
+                        <input type="text" id="cv_est" placeholder="Estado">
                         <input type="text" id="cv_acc" placeholder="Accesorios">
                         <input type="number" id="cv_precio" placeholder="Precio final (€)">
                     </div>
-                    <div>
-                        <label>Firma Comprador (Alejandro)</label>
-                        <canvas id="sig-comprador" class="sig-canvas"></canvas>
-                        <button class="btn-clear" onclick="limpiarSig('comprador')">Limpiar Alejandro</button>
-                        
-                        <label style="margin-top:15px">Firma Vendedor</label>
-                        <canvas id="sig-vendedor" class="sig-canvas"></canvas>
-                        <button class="btn-clear" onclick="limpiarSig('vendedor')">Limpiar Vendedor</button>
-                        
-                        <div class="btn-group" style="margin-top:20px">
-                            <button class="btn-black" onclick="generarContrato()">Vista Previa</button>
-                            <button class="btn-green" onclick="window.print()">Imprimir PDF</button>
-                        </div>
-                    </div>
+                </div>
+                <div class="grid-controles" style="margin-top:20px;">
+                    <div><label>Firma Comprador (<span id="nom_c">Alejandro</span>)</label><canvas id="sig-comprador" class="sig-canvas"></canvas><button class="btn-clear" onclick="limpiarSig('comprador')">Borrar</button></div>
+                    <div><label>Firma Vendedor</label><canvas id="sig-vendedor" class="sig-canvas"></canvas><button class="btn-clear" onclick="limpiarSig('vendedor')">Borrar</button></div>
+                </div>
+                <div class="btn-group" style="margin-top:20px">
+                    <button class="btn-black" onclick="generarContrato()">Vista Previa</button>
+                    <button class="btn-green" onclick="window.print()">Imprimir PDF</button>
                 </div>
             </div>
 
             <div id="contrato-render" class="doc-render">
                 <div class="header">
-                    <div class="datos-emisor">
+                    <div class="datos-emisor" id="emisor_c">
                         <p><strong>COMPRADOR:</strong></p>
                         <p>Alejandro Lay Velasco</p>
                         <p>47196144Y</p>
+                        <p>Carrer d'Enric Morera, 64B</p>
                         <p>08820 El Prat de Llobregat, Barcelona</p>
                     </div>
-                    <div class="header-derecha"><h1>CONTRATO</h1><p>Fecha: <span id="f_fecha_cv"></span></p></div>
+                    <div class="header-derecha">
+                        <h1>CONTRATO</h1>
+                        <p>Ref: <span id="f_cv_num">---</span></p>
+                        <p>Fecha: <span id="f_fecha_cv"></span></p>
+                    </div>
                 </div>
-                <p><strong>REUNIDOS:</strong> Comprador Sr. Alejandro Lay Velasco, y <strong>VENDEDOR</strong>:</p>
-                <p>D/Dña. <span id="out_cv_nombre" style="font-weight:bold"></span>, con DNI <span id="out_cv_dni" style="font-weight:bold"></span>, teléfono <span id="out_cv_tel" style="font-weight:bold"></span> y domicilio en <span id="out_cv_dir" style="font-weight:bold"></span>.</p>
-                <p><strong>ACUERDAN:</strong> Compraventa del bien <span id="out_cv_prod" style="font-weight:bold"></span> con IMEI/Serie <span id="out_cv_imei" style="font-weight:bold"></span>, en estado <span id="out_cv_est" style="font-weight:bold"></span> y con accesorios <span id="out_cv_acc" style="font-weight:bold"></span>, por un importe de <span id="out_cv_precio" style="font-weight:bold"></span> €.</p>
-                <p style="font-size: 0.85rem; color: #666; text-align: justify; margin-top: 20px;">El vendedor manifiesta que no actúa como profesional, que el bien es de procedencia lícita y se transmite libre de cargas. Confirma haber recibido el importe íntegro.</p>
+
+                <div id="contrato-render-body" style="line-height: 1.6;">
+                    <div style="margin-bottom: 25px;">
+                        <p style="margin: 0; border-bottom: 1px solid #eee; padding-bottom: 5px;"><strong>INTERVINIENTES:</strong></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+                            <div>
+                                <span style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Comprador</span><br>
+                                <span class="emisor_nom" style="font-weight: bold;">Alejandro Lay Velasco</span>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Vendedor</span><br>
+                                <span id="out_cv_nombre" style="font-weight: bold;">---</span>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.7rem; color: #888; text-transform: uppercase;">DNI Vendedor</span><br>
+                                <span id="out_cv_dni">---</span>
+                            </div>
+                            <div>
+                                <span style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Teléfono Vendedor</span><br>
+                                <span id="out_cv_tel">---</span>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px;">
+                            <span style="font-size: 0.7rem; color: #888; text-transform: uppercase;">Domicilio Vendedor</span><br>
+                            <span id="out_cv_dir">---</span>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <p style="margin: 0; border-bottom: 1px solid #eee; padding-bottom: 5px;"><strong>OBJETO DE LA COMPRAVENTA:</strong></p>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px;">
+                            <div><strong>Bien:</strong> <span id="out_cv_prod" style="font-weight:bold"></span></div>
+                            <div><strong>IMEI/Serie:</strong> <span id="out_cv_imei"></span></div>
+                            <div><strong>Estado:</strong> <span id="out_cv_est"></span></div>
+                            <div><strong>Accesorios:</strong> <span id="out_cv_acc"></span></div>
+                            <div style="grid-column: span 2; margin-top: 5px;">
+                                <strong>Importe total pagado:</strong> <span id="out_cv_precio" style="font-size: 1.1rem; font-weight:bold"></span> €
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 30px;">
+                        <p style="margin: 0; text-decoration: underline;"><strong>MANIFESTACIONES DEL VENDEDOR:</strong></p>
+                        <ol style="margin-left: 20px; margin-top: 10px; font-size: 0.9rem; color: #444;">
+                            <li style="margin-bottom: 5px;">Declara que no actúa como empresario ni profesional y que el bien es de su patrimonio particular.</li>
+                            <li style="margin-bottom: 5px;">Declara que el bien es de lícita procedencia y se transmite libre de cargas o reservas de dominio.</li>
+                            <li style="margin-bottom: 5px;">Confirma haber recibido el importe íntegro indicado en este documento en el momento de la firma.</li>
+                        </ol>
+                    </div>
+                </div>
 
                 <div class="signature-grid">
-                    <div>
-                        <img id="img-sig-comprador" class="f-img">
-                        <div class="signature-line">Fdo: Alejandro Lay (Comprador)</div>
-                    </div>
-                    <div>
-                        <img id="img-sig-vendedor" class="f-img">
-                        <div class="signature-line">Fdo: El Vendedor</div>
-                    </div>
+                    <div><img id="img-sig-comprador" class="f-img"><div class="signature-line">Fdo: <span class="emisor_nom">Alejandro Lay Velasco</span> (Comprador)</div></div>
+                    <div><img id="img-sig-vendedor" class="f-img"><div class="signature-line">Fdo: El Vendedor</div></div>
                 </div>
+                <div class="lopd" id="lopd_c"><strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en este contrato serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com</div>
             </div>
         </div>
     </div>
 
     <script>
         let sigs = { comprador: null, vendedor: null };
+        const dataEmisores = {
+            alejandro: { nom: "Alejandro Lay Velasco", dni: "47196144Y", dir: "Carrer d'Enric Morera, 64B", loc: "08820 El Prat de Llobregat, Barcelona", mail: "alejandro.lay30@gmail.com" },
+            guillem: { nom: "Guillem Fernández", dni: "26062434F", dir: "Barcelona", loc: "Barcelona", mail: "guillem@gmail.com" }
+        };
+
+        function cambiarEmisor(tipo) {
+            const em = dataEmisores[document.getElementById('sel_emisor_' + tipo).value];
+            document.getElementById('emisor_' + (tipo === 'v' ? 'f' : 'c')).innerHTML = tipo === 'v' ? `<p><strong>${em.nom}</strong></p><p>${em.dni}</p><p>${em.dir}</p><p>${em.loc}</p>` : `<p><strong>COMPRADOR:</strong></p><p>${em.nom}</p><p>${em.dni}</p><p>${em.dir}</p><p>${em.loc}</p>`;
+            const lopd = `<strong>PROTECCION DE DATOS.</strong> En nombre de ${em.nom} le informamos que los datos personales que puedan figurar en este documento serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: ${em.mail}`;
+            document.getElementById('lopd_' + tipo).innerHTML = lopd;
+            if(tipo === 'c') { document.querySelectorAll('.emisor_nom').forEach(el => el.innerText = em.nom); document.getElementById('nom_c').innerText = em.nom.split(' ')[0]; }
+        }
 
         function cambiarVista(id) {
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
@@ -225,57 +277,32 @@
             const cant = parseFloat(document.querySelector('#items-venta .cant').value) || 1;
             const pIva = parseFloat(document.querySelector('#items-venta .precio').value) || 0;
             const baseU = pIva / 1.21;
-            const totalB = baseU * cant;
-            const iva = totalB * 0.21;
-            document.getElementById('f_tabla_body').innerHTML = `<tr><td>${desc}</td><td style="text-align:center">${cant}</td><td style="text-align:right">${baseU.toFixed(2).replace('.',',')} €</td><td style="text-align:right">${totalB.toFixed(2).replace('.',',')} €</td></tr>`;
-            document.getElementById('f_subtotal').innerText = totalB.toFixed(2).replace('.',',') + ' €';
-            document.getElementById('f_iva').innerText = iva.toFixed(2).replace('.',',') + ' €';
-            document.getElementById('f_final').innerText = (totalB + iva).toFixed(2).replace('.',',') + ' €';
+            document.getElementById('f_tabla_body').innerHTML = `<tr><td>${desc}</td><td style="text-align:center">${cant}</td><td style="text-align:right">${baseU.toFixed(2).replace('.',',')} €</td><td style="text-align:right">${pIva.toFixed(2).replace('.',',')} €</td></tr>`;
+            document.getElementById('f_subtotal').innerText = baseU.toFixed(2).replace('.',',') + ' €';
+            document.getElementById('f_iva').innerText = (pIva - baseU).toFixed(2).replace('.',',') + ' €';
+            document.getElementById('f_final').innerText = pIva.toFixed(2).replace('.',',') + ' €';
         }
 
         function generarContrato() {
-            const ids = ['nombre','dni','tel','dir','prod','imei','est','acc','precio'];
-            ids.forEach(id => document.getElementById('out_cv_'+id).innerText = document.getElementById('cv_'+id).value);
-            
-            document.getElementById('img-sig-comprador').src = sigs.comprador.canvas.toDataURL();
-            document.getElementById('img-sig-comprador').style.display = 'block';
-            document.getElementById('img-sig-vendedor').src = sigs.vendedor.canvas.toDataURL();
-            document.getElementById('img-sig-vendedor').style.display = 'block';
+            document.getElementById('f_cv_num').innerText = document.getElementById('cv_num').value || '---';
+            ['nombre','dni','tel','dir','prod','imei','est','acc','precio'].forEach(id => { const el = document.getElementById('out_cv_'+id); if(el) el.innerText = document.getElementById('cv_'+id).value; });
+            ['comprador','vendedor'].forEach(t => { const img = document.getElementById('img-sig-'+t); img.src = sigs[t].canvas.toDataURL(); img.style.display = 'block'; });
         }
 
-        function initCanvases() {
-            sigs.comprador = setupCanvas('sig-comprador');
-            sigs.vendedor = setupCanvas('sig-vendedor');
-        }
-
+        function initCanvases() { sigs.comprador = setupCanvas('sig-comprador'); sigs.vendedor = setupCanvas('sig-vendedor'); }
         function setupCanvas(id) {
-            const canvas = document.getElementById(id);
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.offsetWidth;
-            canvas.height = canvas.offsetHeight;
-            let drawing = false;
-
-            const p = (e) => {
-                const r = canvas.getBoundingClientRect();
-                const cX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
-                const cY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
-                return { x: cX - r.left, y: cY - r.top };
-            };
-
-            const start = (e) => { drawing = true; const pos = p(e); ctx.beginPath(); ctx.moveTo(pos.x, pos.y); if(e.touches) e.preventDefault(); };
-            const move = (e) => { if(!drawing) return; const pos = p(e); ctx.lineTo(pos.x, pos.y); ctx.lineWidth = 2; ctx.stroke(); if(e.touches) e.preventDefault(); };
-            
-            canvas.addEventListener('mousedown', start); canvas.addEventListener('mousemove', move); window.addEventListener('mouseup', () => drawing = false);
-            canvas.addEventListener('touchstart', start); canvas.addEventListener('touchmove', move); canvas.addEventListener('touchend', () => drawing = false);
-            
+            const canvas = document.getElementById(id); const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight;
+            let draw = false;
+            const p = (e) => { const r = canvas.getBoundingClientRect(); return { x: (e.clientX || (e.touches && e.touches[0].clientX) || 0) - r.left, y: (e.clientY || (e.touches && e.touches[0].clientY) || 0) - r.top }; };
+            canvas.addEventListener('mousedown', (e) => { draw = true; ctx.beginPath(); const pos = p(e); ctx.moveTo(pos.x, pos.y); });
+            canvas.addEventListener('mousemove', (e) => { if(!draw) return; const pos = p(e); ctx.lineTo(pos.x, pos.y); ctx.lineWidth = 2; ctx.stroke(); });
+            window.addEventListener('mouseup', () => draw = false);
+            canvas.addEventListener('touchstart', (e) => { draw = true; ctx.beginPath(); const pos = p(e); ctx.moveTo(pos.x, pos.y); e.preventDefault(); });
+            canvas.addEventListener('touchmove', (e) => { if(!draw) return; const pos = p(e); ctx.lineTo(pos.x, pos.y); ctx.lineWidth = 2; ctx.stroke(); e.preventDefault(); });
             return { canvas, ctx };
         }
-
-        function limpiarSig(tipo) {
-            const s = sigs[tipo];
-            s.ctx.clearRect(0, 0, s.canvas.width, s.canvas.height);
-            document.getElementById('img-sig-' + tipo).style.display = 'none';
-        }
+        function limpiarSig(tipo) { sigs[tipo].ctx.clearRect(0,0,sigs[tipo].canvas.width,sigs[tipo].canvas.height); document.getElementById('img-sig-'+tipo).style.display='none'; }
     </script>
 </body>
 </html>
