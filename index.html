@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema Compraventa 2026</title>
+    <title>Sistema Alejandro & Guillem</title>
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     <style>
@@ -50,6 +50,7 @@
         .fila-total.final { border-top: 2px solid #333; margin-top: 8px; padding-top: 8px; font-weight: bold; font-size: 1.1rem; }
         
         .lopd { margin-top: 18px; font-size: 0.52rem; color: #666; text-align: justify; line-height: 1.15; border-top: 1px solid #f0f0f0; padding-top: 10px; }
+        .rebu-nota { margin-top: 10px; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; color: #000; border-top: 1px solid #eee; padding-top: 5px; }
 
         .sig-canvas { border: 2px dashed #ccc; background: #fafafa; width: 100%; height: 140px; touch-action: none; border-radius: 8px; margin-bottom: 5px; }
         .signature-grid { margin-top: 25px; display: flex; justify-content: space-between; text-align: center; gap: 30px; }
@@ -93,7 +94,7 @@
                     <div>
                         <label>Emitido por:</label>
                         <select id="sel_emisor_v" onchange="cambiarEmisor('v')">
-                            <option value="alejandro">Alejandro Lay</option>
+                            <option value="alejandro">Alejandro Lay Velasco</option>
                             <option value="guillem">Guillem Fernández</option>
                         </select>
                         <label>Nº Factura</label>
@@ -144,6 +145,7 @@
                 </div>
                 <div style="margin-top: 15px; font-size: 0.85rem;"><strong>Método de pago:</strong> <span id="out_metodo_v">---</span></div>
                 <div class="lopd" id="lopd_v"><strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en esta factura serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com</div>
+                <div class="rebu-nota">Operación acogida al Régimen Especial de Bienes Usados (REBU) de la Ley 37/1992 del Impuesto sobre el Valor añadido (IVA).</div>
             </div>
         </div>
     </div>
@@ -155,9 +157,9 @@
                 <h2>Contrato Compraventa</h2>
                 <div class="grid-controles">
                     <div>
-                        <label>Emitido por:</label>
+                        <label>Emitido por (Comprador):</label>
                         <select id="sel_emisor_c" onchange="cambiarEmisor('c')">
-                            <option value="alejandro">Alejandro Lay</option>
+                            <option value="alejandro">Alejandro Lay Velasco</option>
                             <option value="guillem">Guillem Fernández</option>
                         </select>
                         <label>Nº de Contrato</label>
