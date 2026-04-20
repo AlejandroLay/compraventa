@@ -278,7 +278,7 @@
             const precio = parseFloat(document.getElementById('v_precio').value) || 0;
             document.getElementById('f_num').innerText = document.getElementById('in_num').value || '---';
             document.getElementById('f_fecha_v_render').innerText = "Fecha: " + formatearFecha(document.getElementById('in_fecha_v').value);
-            document.getElementById('f_cliente_datos_render').innerText = document.getElementById('in_cliente_datos').value || '(Vacío)';
+            document.getElementById('f_cliente_datos_render').innerText = document.getElementById('in_cliente_datos').value || '(Cliente particular)';
             document.getElementById('out_metodo_v').innerText = document.getElementById('in_metodo_pago_v').value;
             document.getElementById('f_tabla_body').innerHTML = `<tr><td>${document.getElementById('v_desc').value || '---'}</td><td style="text-align:center">1</td><td style="text-align:right">${precio.toFixed(2).replace('.',',')} €</td></tr>`;
             document.getElementById('f_final').innerText = precio.toFixed(2).replace('.',',') + ' €';
