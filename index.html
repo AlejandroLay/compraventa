@@ -46,10 +46,9 @@
         td { padding: 10px; border-bottom: 1px solid #eee; font-size: 0.85rem; word-wrap: break-word; }
         
         .totales-container { margin-left: auto; width: 45%; }
-        .fila-total { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #f9f9f9; }
-        .fila-total.final { border-top: 2px solid #333; margin-top: 8px; padding-top: 8px; font-weight: bold; font-size: 1.1rem; }
+        .fila-total.final { border-top: 2px solid #333; margin-top: 8px; padding-top: 8px; font-weight: bold; font-size: 1.1rem; display: flex; justify-content: space-between; }
         
-        .lopd { margin-top: 18px; font-size: 0.52rem; color: #666; text-align: justify; line-height: 1.15; border-top: 1px solid #f0f0f0; padding-top: 10px; }
+        .lopd { margin-top: 18px; font-size: 0.52rem; color: #444; text-align: justify; line-height: 1.15; border-top: 1px solid #f0f0f0; padding-top: 10px; }
         .rebu-nota { margin-top: 10px; font-size: 0.6rem; font-weight: bold; text-transform: uppercase; color: #000; border-top: 1px solid #eee; padding-top: 5px; }
 
         .sig-canvas { border: 2px dashed #ccc; background: #fafafa; width: 100%; height: 140px; touch-action: none; border-radius: 8px; margin-bottom: 5px; }
@@ -89,7 +88,7 @@
         <div style="max-width: 1000px; margin: 0 auto;">
             <button class="btn-back" onclick="cambiarVista('inicio')">← Volver al Menú</button>
             <div class="no-print">
-                <h2>Factura de Venta</h2>
+                <h2>Factura de Venta (REBU)</h2>
                 <div class="grid-controles">
                     <div>
                         <label>Emitido por:</label>
@@ -97,6 +96,8 @@
                             <option value="alejandro">Alejandro Lay</option>
                             <option value="guillem">Guillem Fernández</option>
                         </select>
+                        <label>Fecha de Factura</label>
+                        <input type="date" id="in_fecha_v">
                         <label>Nº Factura</label>
                         <input type="text" id="in_num" placeholder="Ej: 2026-001">
                         <label>Datos Cliente</label>
@@ -105,7 +106,7 @@
                     <div>
                         <label>Concepto / Precio</label>
                         <input type="text" id="v_desc" placeholder="Descripción" style="margin-bottom: 10px;">
-                        <input type="number" id="v_precio" placeholder="€ Total">
+                        <input type="number" id="v_precio" placeholder="Importe Total €">
                         <label>Método de Pago</label>
                         <select id="in_metodo_pago_v">
                             <option>Efectivo</option>
@@ -132,17 +133,13 @@
                     <div class="header-derecha">
                         <h1>FACTURA</h1>
                         <p>Nº: <span id="f_num">---</span></p>
-                        <p id="f_fecha_v"></p>
+                        <p id="f_fecha_v_render"></p>
                     </div>
                 </div>
                 <div class="seccion-label">Facturar a:</div>
-                <div id="f_cliente_datos" class="datos-cliente-box">"Vista Previa"</div>
-                <table><thead><tr><th>Descripción</th><th>Cant.</th><th style="text-align:right">Base</th><th style="text-align:right">Total</th></tr></thead><tbody id="f_tabla_body"></tbody></table>
-                <div class="totales-container">
-                    <div class="fila-total"><span>Base Imponible</span> <span id="f_subtotal">0,00 €</span></div>
-                    <div class="fila-total"><span>IVA (21%)</span> <span id="f_iva">0,00 €</span></div>
-                    <div class="fila-total final"><span>TOTAL NETO</span> <span id="f_final">0,00 €</span></div>
-                </div>
+                <div id="f_cliente_datos_render" class="datos-cliente-box">Pulse "Vista Previa"</div>
+                <table><thead><tr><th>Descripción</th><th style="text-align:center">Cant.</th><th style="text-align:right">Total</th></tr></thead><tbody id="f_tabla_body"></tbody></table>
+                <div class="totales-container"><div class="fila-total final"><span>TOTAL</span> <span id="f_final">0,00 €</span></div></div>
                 <div style="margin-top: 15px; font-size: 0.85rem;"><strong>Método de pago:</strong> <span id="out_metodo_v">---</span></div>
                 <div class="lopd" id="lopd_v"><strong>PROTECCION DE DATOS.</strong> En nombre de Alejandro Lay Velasco le informamos que los datos personales que puedan figurar en esta factura serán tratados con la finalidad de poder gestionar la relación comercial que nos vincula. Los datos proporcionados se conservarán mientras se mantenga la relación comercial o durante los años necesarios para cumplir con las obligaciones legales, y no se cederán a terceros salvo en los casos en que exista una obligación legal. El usuario podrá, en todo momento, ejercitar los derechos reconocidos en el Reglamento (UE) 2016/679, de acceso, rectificación de datos inexactos o supresión, limitación del tratamiento, oposición y portabilidad de los datos, a la siguiente dirección de correo electrónico: alejandro.lay30@gmail.com</div>
                 <div class="rebu-nota">Operación acogida al Régimen Especial de Bienes Usados (REBU) de la Ley 37/1992 del Impuesto sobre el Valor añadido (IVA).</div>
@@ -162,6 +159,8 @@
                             <option value="alejandro">Alejandro Lay</option>
                             <option value="guillem">Guillem Fernández</option>
                         </select>
+                        <label>Fecha de Contrato</label>
+                        <input type="date" id="in_fecha_cv">
                         <label>Nº de Contrato</label>
                         <input type="text" id="cv_num" placeholder="Ej: A-0053">
                         <label>Datos del Vendedor</label>
@@ -190,10 +189,7 @@
                     <div><label>Firma Alejandro/Guillem</label><canvas id="sig-comprador" class="sig-canvas"></canvas><button class="btn-clear" onclick="limpiarSig('comprador')">Borrar</button></div>
                     <div><label>Firma Vendedor</label><canvas id="sig-vendedor" class="sig-canvas"></canvas><button class="btn-clear" onclick="limpiarSig('vendedor')">Borrar</button></div>
                 </div>
-                <div class="btn-group" style="margin-top:20px">
-                    <button class="btn-black" onclick="generarContrato()">Vista Previa</button>
-                    <button class="btn-green" onclick="window.print()">Imprimir PDF</button>
-                </div>
+                <div class="btn-group" style="margin-top:20px"><button class="btn-black" onclick="generarContrato()">Vista Previa</button><button class="btn-green" onclick="window.print()">Imprimir PDF</button></div>
             </div>
 
             <div id="contrato-render" class="doc-render">
@@ -205,9 +201,8 @@
                         <p>Carrer d'Enric Morera, 64B</p>
                         <p>08820 El Prat de Llobregat, Barcelona</p>
                     </div>
-                    <div class="header-derecha"><h1>CONTRATO COMPRAVENTA</h1><p>Ref: <span id="f_cv_num">---</span></p><p id="f_fecha_cv"></p></div>
+                    <div class="header-derecha"><h1>CONTRATO COMPRAVENTA</h1><p>Ref: <span id="f_cv_num">---</span></p><p id="f_fecha_cv_render"></p></div>
                 </div>
-
                 <div id="contrato-render-body" style="line-height: 1.5;">
                     <div style="margin-bottom: 15px;">
                         <p style="margin: 0; border-bottom: 1px solid #000; padding-bottom: 3px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">1. Intervinientes</p>
@@ -219,7 +214,6 @@
                         </div>
                         <div style="margin-top: 5px;"><span style="font-size: 0.65rem; color: #888;">Domicilio Vendedor</span><br><span id="out_cv_dir" style="font-size: 0.9rem;">---</span></div>
                     </div>
-
                     <div style="margin-bottom: 15px;">
                         <p style="margin: 0; border-bottom: 1px solid #000; padding-bottom: 3px; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">2. Objeto de la Compraventa</p>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
@@ -231,7 +225,6 @@
                             <div><strong>Método de pago:</strong> <span id="out_metodo_c"></span></div>
                         </div>
                     </div>
-
                     <div style="margin-bottom: 20px;">
                         <p style="margin: 0; font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">3. Manifestaciones del Vendedor</p>
                         <ol style="margin-left: 15px; margin-top: 5px; font-size: 0.8rem; color: #444;">
@@ -241,7 +234,6 @@
                         </ol>
                     </div>
                 </div>
-
                 <div class="signature-grid">
                     <div><img id="img-sig-comprador" class="f-img"><div class="signature-line">Fdo: <span class="emisor_nom">Alejandro Lay</span> (Comprador)</div></div>
                     <div><img id="img-sig-vendedor" class="f-img"><div class="signature-line">Fdo: El Vendedor</div></div>
@@ -258,6 +250,15 @@
             guillem: { nom: "Guillem Fernández", dni: "26062434F", dir: "Passeig d'Andreu Nin, 71, Nou Barris", loc: "08016 Barcelona", mail: "guillemfdez99@gmail.com" }
         };
 
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('in_fecha_v').value = today;
+        document.getElementById('in_fecha_cv').value = today;
+
+        function formatearFecha(fechaStr) {
+            if(!fechaStr) return "---";
+            return new Date(fechaStr).toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+
         function cambiarEmisor(tipo) {
             const em = dataEmisores[document.getElementById('sel_emisor_' + tipo).value];
             document.getElementById('emisor_' + (tipo === 'v' ? 'f' : 'c')).innerHTML = tipo === 'v' ? `<p><strong>${em.nom}</strong></p><p>${em.dni}</p><p>${em.dir}</p><p>${em.loc}</p>` : `<p><strong>COMPRADOR:</strong></p><p>${em.nom}</p><p>${em.dni}</p><p>${em.dir}</p><p>${em.loc}</p>`;
@@ -273,24 +274,19 @@
             window.scrollTo(0,0);
         }
 
-        const hoy = new Date().toLocaleDateString('es-ES', { day: '2-digit', month: 'long', year: 'numeric' });
-        document.getElementById('f_fecha_v').innerText = "Fecha: " + hoy;
-        document.getElementById('f_fecha_cv').innerText = "Fecha: " + hoy;
-
         function generarFactura() {
+            const precio = parseFloat(document.getElementById('v_precio').value) || 0;
             document.getElementById('f_num').innerText = document.getElementById('in_num').value || '---';
-            document.getElementById('f_cliente_datos').innerText = document.getElementById('in_cliente_datos').value || '(Vacío)';
+            document.getElementById('f_fecha_v_render').innerText = "Fecha: " + formatearFecha(document.getElementById('in_fecha_v').value);
+            document.getElementById('f_cliente_datos_render').innerText = document.getElementById('in_cliente_datos').value || '(Vacío)';
             document.getElementById('out_metodo_v').innerText = document.getElementById('in_metodo_pago_v').value;
-            const pIva = parseFloat(document.getElementById('v_precio').value) || 0;
-            const baseU = pIva / 1.21;
-            document.getElementById('f_tabla_body').innerHTML = `<tr><td>${document.getElementById('v_desc').value}</td><td style="text-align:center">1</td><td style="text-align:right">${baseU.toFixed(2).replace('.',',')} €</td><td style="text-align:right">${pIva.toFixed(2).replace('.',',')} €</td></tr>`;
-            document.getElementById('f_subtotal').innerText = baseU.toFixed(2).replace('.',',') + ' €';
-            document.getElementById('f_iva').innerText = (pIva - baseU).toFixed(2).replace('.',',') + ' €';
-            document.getElementById('f_final').innerText = pIva.toFixed(2).replace('.',',') + ' €';
+            document.getElementById('f_tabla_body').innerHTML = `<tr><td>${document.getElementById('v_desc').value || '---'}</td><td style="text-align:center">1</td><td style="text-align:right">${precio.toFixed(2).replace('.',',')} €</td></tr>`;
+            document.getElementById('f_final').innerText = precio.toFixed(2).replace('.',',') + ' €';
         }
 
         function generarContrato() {
             document.getElementById('f_cv_num').innerText = document.getElementById('cv_num').value || '---';
+            document.getElementById('f_fecha_cv_render').innerText = "Fecha: " + formatearFecha(document.getElementById('in_fecha_cv').value);
             document.getElementById('out_metodo_c').innerText = document.getElementById('in_metodo_pago_c').value;
             ['nombre','dni','tel','dir','prod','imei','est','acc','precio'].forEach(id => { const el = document.getElementById('out_cv_'+id); if(el) el.innerText = document.getElementById('cv_'+id).value; });
             ['comprador','vendedor'].forEach(t => { const img = document.getElementById('img-sig-'+t); img.src = sigs[t].canvas.toDataURL(); img.style.display = 'block'; });
